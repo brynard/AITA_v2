@@ -134,7 +134,7 @@ class ProjectController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $image_data = file_get_contents($image);
-            $detail->image = $image_data;
+            $detail->image = base64_encode($image_data);
         }
 
 
@@ -149,16 +149,47 @@ class ProjectController extends Controller
     {
         $validatedData = $request->validate([
             'item_name' => 'required|string|max:255',
-            // Add validation rules for other fields here
+            'type' => 'required|string',
+            'subtype' => 'nullable|string|max:255',
+            'model' => 'nullable|string|max:255',
+            'engine_type' => 'nullable|string|max:255',
+            'serial_number' => 'nullable|string|max:255',
+            'voltage' => 'nullable|numeric|max:255',
+            'supplier' => 'nullable|string|max:255',
+            'location' => 'required|string|max:255',
+            'unit_price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'date_received' => 'required|date',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $detail->item_name = $validatedData['item_name'];
-        // Update other fields here
+        $detail->type = $validatedData['type'];
+        $detail->subtype = $validatedData['subtype'];
+        $detail->model = $validatedData['model'];
+        $detail->engine_type = $validatedData['engine_type'];
+        $detail->serial_number = $validatedData['serial_number'];
+        $detail->voltage = $validatedData['voltage'];
+        $detail->supplier = $validatedData['supplier'];
+        $detail->location = $validatedData['location'];
+        $detail->unit_price = $validatedData['unit_price'];
+        $detail->quantity = $validatedData['quantity'];
+        $detail->price = $validatedData['quantity'] * $validatedData['unit_price'];
+        $detail->date_received = $validatedData['date_received'];
+
+        // upload and update image file if provided
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_data = file_get_contents($image);
+            $detail->image = base64_encode($image_data);
+        }
+
         $detail->save();
 
         return redirect()->route('projects.show', $project->id)
-            ->with('success', 'The item has been updated.');
+            ->with('success', 'Item has been updated successfully.');
     }
+
 
 
     public function createItem(Project $project)
@@ -185,6 +216,6 @@ class ProjectController extends Controller
 
         $detail = $project->projectDetails()->where('id', $detail)->first();
 
-        return view('pages.item-form', compact('detail'));
+        return view('pages.item-form', compact('detail', 'project'));
     }
 }

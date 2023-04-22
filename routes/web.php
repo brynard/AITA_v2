@@ -46,6 +46,7 @@ Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('pro
 Route::post('/projects/{project}/items', [ProjectController::class, 'storeItem'])->name('projects.storeItem');
 Route::get('/projects/{project}/items/create', [ProjectController::class, 'createItem'])->name('projects.createItem');
 Route::get('/projects/{project}/items/{detail}', [ProjectController::class, 'edit'])->name('projects.editItem');
+Route::put('/projects/{project}/items/{detail}', [ProjectController::class, 'updateItem'])->name('projects.updateItem');
 
 
 //Loan
