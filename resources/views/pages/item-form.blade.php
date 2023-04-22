@@ -212,7 +212,8 @@
                                     <div class="position-relative flex-column">
                                         <div id="preview-container" class="bg-white border rounded"
                                             style="width: 150px; height: 150px;">
-                                            <img id="preview" src="#" alt="Preview"
+                                            <img id="preview" {{-- src="data:image/jpeg;base64,{{ base64_decode($detail->image) }}" --}} src="{{ asset('img/AITA.png') }}"
+                                                alt="Preview"
                                                 style="display:none; max-width: 100%; max-height: 100%; object-fit: contain;">
                                         </div>
                                         <input id="image" type="file" class="form-control mt-3" name="image"

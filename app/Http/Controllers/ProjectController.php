@@ -56,6 +56,7 @@ class ProjectController extends Controller
                 return stristr($detail->item_name, $search) !== false;
             });
         }
+
         return view('pages.project-detail', compact('projectWithDetails'));
     }
 
@@ -175,12 +176,15 @@ class ProjectController extends Controller
     // }
 
 
-    public function edit($id)
+    public function edit(Project $project, $detail)
     {
 
         // Find the project detail by id, with its corresponding project
-        $detail = ProjectDetails::with('project')->findOrFail($id);
-        dd($detail);
+        // $detail = ProjectDetails::with('project')->findOrFail($id);
+        // $project = Project::find(1); // Retrieve the project with id 1
+
+        $detail = $project->projectDetails()->where('id', $detail)->first();
+
         return view('pages.item-form', compact('detail'));
     }
 }

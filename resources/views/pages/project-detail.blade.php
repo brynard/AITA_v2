@@ -110,7 +110,7 @@
 
                                         </td>
                                         <td class="align-middle">
-                                            <a href="{{ route('projects.editItem', ['id' => '151']) }}"
+                                            <a href="{{ route('projects.editItem', ['project' => $projectWithDetails->id, 'detail' => $detail->id]) }}"
                                                 class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                                 data-original-title="Edit user">
                                                 Edit
