@@ -14,6 +14,11 @@ class Project extends Model
         return $this->hasMany(ProjectDetails::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     protected $fillable = [
         'name',
         'budget',

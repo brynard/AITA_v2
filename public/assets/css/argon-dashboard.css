@@ -10381,6 +10381,11 @@ fieldset:disabled .btn {
   color: #8392ab !important;
 }
 
+.text-tertiary {
+  color: #40fbab !important;
+}
+
+
 .text-success {
   color: #2dce89 !important;
 }
@@ -26802,4 +26807,55 @@ pre[class*=language-] {
   .ps {
     overflow: auto !important;
   }
+}
+
+
+
+.position-relative {
+  position: relative;
+}
+
+.change-picture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.avatar:hover .change-picture {
+  opacity: 1;
+}
+
+
+
+/*brynard stuff*/
+.btn-rectangular {
+  border-radius: 0;
+
+}
+
+
+
+.btn-rectangular:hover,
+.btn-rectangular:focus {
+  background-color: #23272b;
+  color: #fff;
+}
+
+.button-cell {
+  padding: 0;
+}
+
+.button-cell button {
+  margin: 5px;
 }

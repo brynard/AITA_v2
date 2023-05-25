@@ -27,7 +27,10 @@ class User extends Authenticatable
         'city',
         'country',
         'postal',
-        'about'
+        'about',
+        'role',
+        'phone',
+        'profile_picture'
     ];
 
     /**
@@ -53,10 +56,16 @@ class User extends Authenticatable
      * Always encrypt the password when it is updated.
      *
      * @param $value
-    * @return string
-    */
+     * @return string
+     */
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+
+    public function loanRequests()
+    {
+        return $this->hasMany(LoanRequest::class, 'user_id');
     }
 }

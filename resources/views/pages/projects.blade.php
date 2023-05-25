@@ -95,7 +95,7 @@
                                             </div>
                                         </td>
                                         <td class="align-middle">
-                                            <div class="btn-group">
+                                            <div class="btn-group position-relative">
                                                 <button type="button" class="btn btn-link text-secondary mb-0"
                                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fa fa-ellipsis-v text-xs"></i>
@@ -108,10 +108,10 @@
                                                         @method('DELETE')
                                                         <button type="submit" class="dropdown-item">Delete</button>
                                                     </form>
-
                                                 </div>
                                             </div>
                                         </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -133,8 +133,13 @@
 
     <script src="{{ asset('assets/js/project.js') }}"></script>
 
-
-
+    <script>
+        .btn - group.position - relative.dropdown - menu {
+            left: auto;
+            right: 0;
+            transform: translateX(-100 % );
+        }
+    </script>
     <!-- Modal -->
     <div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true"
         style="margin-top: 100px;">

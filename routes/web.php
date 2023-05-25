@@ -25,7 +25,7 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ResetPassword;
 use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\ProjectController;
-
+use App\Http\Controllers\LoanController;
 
 
 
@@ -50,8 +50,9 @@ Route::put('/projects/{project}/items/{detail}', [ProjectController::class, 'upd
 
 
 //Loan
-
-
+Route::get('/loan', [LoanController::class, 'index'])->name('loan');
+Route::post('/loan', [LoanController::class, 'requestLoan'])->name('loan.requestLoan');
+Route::put('/loan', [LoanController::class, 'updateReturnStatus'])->name('loan.updateReturnStatus');
 //Report
 
 

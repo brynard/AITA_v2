@@ -17,21 +17,24 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
-
         $search = $request->input('search');
+        $userId = auth()->user()->id; // Get the ID of the currently authenticated user
+
+        $query = Project::where('user_id', $userId); // Filter projects by user ID
 
         if ($search) {
-            $projects = Project::where('name', 'LIKE', '%' . $search . '%')
-                ->orWhere('budget', 'LIKE', '%' . $search . '%')
-                ->orWhere('status', 'LIKE', '%' . $search . '%')
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
-        } else {
-            $projects = Project::orderBy('created_at', 'desc')->paginate(10);
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('budget', 'LIKE', '%' . $search . '%')
+                    ->orWhere('status', 'LIKE', '%' . $search . '%');
+            });
         }
+
+        $projects = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return view('pages.projects', ['projects' => $projects]);
     }
+
 
 
 
@@ -75,12 +78,15 @@ class ProjectController extends Controller
         $project = new Project;
         $project->name = $request->input('name');
         $project->budget = $request->input('budget');
+        $project->user_id = auth()->user()->id;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $image_data = file_get_contents($image);
             $image_base64 = base64_encode($image_data);
             $project->logo = $image_base64;
         }
+
+
 
         $project->save();
 

@@ -9,10 +9,7 @@
                 <li class="breadcrumb-item text-sm text-white active" aria-current="page">{{ $title }}</li>
             </ol>
             <h6 class="font-weight-bolder text-white mb-0">{{ $title }}</h6>
-            <a href="{{ url()->previous() }}" class="back-link">
-                <i class="fas fa-arrow-left"></i>
-                <span>Back</span>
-            </a>
+
 
             <style>
                 .back-link {
