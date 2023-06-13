@@ -14,7 +14,7 @@ class ProjectDetails extends Model
     {
         return $this->belongsTo(Project::class, 'project_id');
     }
-
+    public $timestamps = true;
     protected $fillable = [
         'id',
         'project_id',

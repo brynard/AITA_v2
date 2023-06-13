@@ -89,18 +89,6 @@ $(document).ready(function () {
 
 
 
-function showReturnItemModal(id) {
-    console.log("testing");
-    $('#confirmReturnBtn').data('id', id);
-    $('#returnItemModal').modal('show');
-}
-
-function cancelRequest() {
-    // Perform any necessary actions
-
-    // Close the modal
-    $('#returnItemModal').modal('hide');
-}
 
 
 

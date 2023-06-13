@@ -22,8 +22,10 @@ class LoanRequest extends Model
         'loan_start_date',
         'loan_end_date',
         'created_at',
-        'updated_at'
-
+        'updated_at',
+        'return_date',
+        'process_date',
+        'overdue'
         // additional attributes specific to the loan request
     ];
 
@@ -31,6 +33,17 @@ class LoanRequest extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function requester()
+    {
+        return $this->belongsTo(User::class, 'requester_id');
+    }
+
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function projectDetails()

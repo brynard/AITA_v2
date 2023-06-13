@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->default(1);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('loan_requests', function (Blueprint $table) {
+            $table->datetime('return_date')->nullable();
+            $table->datetime('process_date')->nullable();
+            $table->boolean('overdue')->default(false);
         });
     }
 
@@ -22,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('projects', function (Blueprint $table) {
+        Schema::table('loan_requests', function (Blueprint $table) {
             //
         });
     }

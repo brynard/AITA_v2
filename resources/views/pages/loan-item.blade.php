@@ -6,7 +6,7 @@
     <div class="container-fluid py-4">
 
         <div class="row mt-4">
-            <div class="col-lg-7 mb-lg-0 mb-4">
+            <div class="col-lg-9 mb-lg-0 mb-4">
                 <div class="card ">
                     <div class="card-header pb-0 p-3">
                         <div class="d-flex justify-content-between">
@@ -45,10 +45,19 @@
                                                 </h6>
                                             </div>
                                         </td>
+                                        <td>
+                                            <div class="text-center">
+                                                <p class="text-xs font-weight-bold mb-0">Owner</p>
+                                                <h6 class="text-sm mb-0">
+                                                    {{ $request->owner->username }}
+                                                </h6>
+                                            </div>
+                                        </td>
                                         <td class="button-cell">
                                             <div class="text-end">
                                                 @if ($request->status == 'pending')
-                                                    <button type="button" class="btn btn-secondary" onclick="#">Cancel
+                                                    <button type="button" class="btn btn-secondary"
+                                                        onclick="showCancelRequestModal('{{ $request->id }}')">Cancel
                                                         Request</button>
                                                 @elseif ($request->status == 'approved')
                                                     <button type="button" class="btn btn-dark"
@@ -67,84 +76,57 @@
                             </tbody>
                         </table>
                     </div>
+                    {{ $loanRequests->links() }}
                 </div>
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-3">
                 <div class="card">
                     <div class="card-header pb-0 p-3">
                         <h6 class="mb-0">Pending Approval</h6>
                     </div>
                     <div class="card-body p-3">
                         <ul class="list-group">
-                            <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                                        <i class="ni ni-mobile-button text-white opacity-10"></i>
+                            @foreach ($pendingApprovals as $pendingApproval)
+                                <li
+                                    class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                                    <div class="d-flex align-items-center">
+
+                                        <div class="d-flex flex-column">
+                                            <h6 class="mb-1 text-dark text-sm">
+                                                {{ $pendingApproval->projectDetails->item_name }}</h6>
+                                            <span class="text-xs">
+                                                Requester: {{ $pendingApproval->requester->username }}</span>
+                                            <span class="text-xs">
+                                                {{ date('d/m/Y', strtotime($pendingApproval->loan_start_date)) }}
+                                                -
+                                                {{ date('d/m/Y', strtotime($pendingApproval->loan_end_date)) }}</span>
+                                            <span class="text-xs">
+                                                {{ $pendingApproval->desc }}</span>
+                                        </div>
                                     </div>
-                                    <div class="d-flex flex-column">
-                                        <h6 class="mb-1 text-dark text-sm">Devices</h6>
-                                        <span class="text-xs">250 in stock, <span class="font-weight-bold">346+
-                                                sold</span></span>
+                                    <div class="d-flex">
+                                        <button
+                                            class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-top my-auto"
+                                            data-toggle="modal" data-target="#confirmationModal"
+                                            onclick="showConfirmationModal('decline', {{ $pendingApproval->projectDetails->id }})">
+                                            <i class="fas fa-times" aria-hidden="true"></i>
+                                        </button>
+
+                                        <!-- Tick Button -->
+                                        <button
+                                            class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-top my-auto"
+                                            data-toggle="modal" data-target="#confirmationModal"
+                                            onclick="showConfirmationModal('approve', {{ $pendingApproval->id }})">
+                                            <i class="fas fa-check" aria-hidden="true"></i>
+                                        </button>
+
+
                                     </div>
-                                </div>
-                                <div class="d-flex">
-                                    <button
-                                        class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
-                                            class="ni ni-bold-right" aria-hidden="true"></i></button>
-                                </div>
-                            </li>
-                            <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                                        <i class="ni ni-tag text-white opacity-10"></i>
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <h6 class="mb-1 text-dark text-sm">Tickets</h6>
-                                        <span class="text-xs">123 closed, <span class="font-weight-bold">15
-                                                open</span></span>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <button
-                                        class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
-                                            class="ni ni-bold-right" aria-hidden="true"></i></button>
-                                </div>
-                            </li>
-                            <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                                        <i class="ni ni-box-2 text-white opacity-10"></i>
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <h6 class="mb-1 text-dark text-sm">Error logs</h6>
-                                        <span class="text-xs">1 is active, <span class="font-weight-bold">40
-                                                closed</span></span>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <button
-                                        class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
-                                            class="ni ni-bold-right" aria-hidden="true"></i></button>
-                                </div>
-                            </li>
-                            <li class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                                        <i class="ni ni-satisfied text-white opacity-10"></i>
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <h6 class="mb-1 text-dark text-sm">Happy users</h6>
-                                        <span class="text-xs font-weight-bold">+ 430</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <button
-                                        class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i
-                                            class="ni ni-bold-right" aria-hidden="true"></i></button>
-                                </div>
-                            </li>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
+                    {{ $pendingApprovals->links() }}
                 </div>
             </div>
         </div>
@@ -152,20 +134,9 @@
             <div class="search-bar text-center">
                 <form action="#" method="GET">
                     <div class="input-group">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle btn-rectangular btn-dark" type="button"
-                                id="filterDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                All
-                            </button>
 
-                            <ul class="dropdown-menu" aria-labelledby="filterDropdownButton">
-                                <li><a class="dropdown-item" href="#">All</a></li>
-                                <li><a class="dropdown-item" href="#">Asset</a></li>
-                                <li><a class="dropdown-item" href="#">Inventory</a></li>
-                            </ul>
-                        </div>
 
-                        <input type="text" class="form-control" placeholder="Search projects" name="search"
+                        <input type="text" class="form-control" placeholder="Search available items" name="search"
                             value="{{ Request::get('search') }}" style="width: auto; padding: 0.5rem 1rem;">
                         <button type="submit" class="btn btn-primary btn-dark">
                             <i class="fas fa-search"></i>
@@ -196,22 +167,22 @@
                                         Price</th>
                                     <th
                                         class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">
-                                        Quantity</th>
+                                        Type</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($loanItems as $loanItems)
+                                @foreach ($loanItems as $loanItem)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2">
                                                 <div>
-                                                    <img src="data:image/png;base64,{{ $loanItems->image }}"
+                                                    <img src="{{ $loanItem->image ? 'data:image/png;base64,' . $loanItem->image : '/img/itembox.png' }}"
                                                         class="avatar avatar-sm rounded-circle me-2" alt="spotify">
                                                 </div>
                                                 <div class="my-auto">
 
-                                                    <h6 class="mb-0 text-sm itemName">{{ $loanItems->item_name }}</h6>
+                                                    <h6 class="mb-0 text-sm itemName">{{ $loanItem->item_name }}</h6>
 
 
                                                 </div>
@@ -220,17 +191,17 @@
                                         <td>
                                             <p class="text-sm font-weight-bold mb-0">
 
-                                                {{ $loanItems->project->user->username ?? '-' }}</p>
+                                                {{ $loanItem->project->user->username ?? '-' }}</p>
                                         </td>
                                         <td>
-                                            <span class="text-xs font-weight-bold">RM {{ $loanItems->price }}</span>
+                                            <span class="text-xs font-weight-bold">RM {{ $loanItem->price }}</span>
                                         </td>
                                         <td class="align-middle text-center">
-                                            <span class="text-xs font-weight-bold">{{ $loanItems->quantity }}</span>
+                                            <span class="text-xs font-weight-bold">{{ $loanItem->type }}</span>
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-primary loanButton"
-                                                data-item="{{ json_encode($loanItems) }}">
+                                                data-item="{{ json_encode($loanItem) }}">
                                                 Request Loan
                                             </button>
                                         </td>
@@ -238,14 +209,16 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
-                    </div>
-                </div>
-                {{-- {{ $loanItems->links() }} --}}
 
+                    </div>
+                    {!! $loanItemsPagination !!}
+
+                </div>
             </div>
         </div>
+
+
     </div>
 
 
@@ -262,8 +235,9 @@
 
     @include('pages.toastr')
     @include('pages.modal.return-item-modal-confirmation')
-
-
+    @include('pages.modal.cancel-item-modal-confirmation')
+    @include('pages.modal.pending-approval-modal')
+    <!-- Request Loan Item !-->
     <script>
         // Function to open the modal and display the item name
         function openModal(itemId, itemName) {
@@ -310,31 +284,6 @@
 
 
 
-    <script>
-        $('#confirmReturnBtn').on('click', function() {
-            console.log("asdasd");
-            var itemId = $(this).data('id');
-            // Send an AJAX request to the controller endpoint
-            $.ajax({
-                headers: {
-                    'X-CSRF-Token': '{{ csrf_token() }}',
-                },
-                url: '{{ route('loan.updateReturnStatus') }}',
-                method: 'PUT',
-                data: {
-                    itemId: itemId, // Replace with the actual item ID
-                },
-                success: function(response) {
-                    console.log('Return status updated successfully');
-                    $('#returnItemModal').modal('hide');
-                    location.reload();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error updating return status:', error);
-                }
-            });
-        });
-    </script>
     <!-- Modal -->
     <div class="modal fade" id="addLoanModal" tabindex="-1" aria-labelledby="addLoanModalLabel" aria-hidden="true"
         style="margin-top: 100px;" data-backdrop="static">

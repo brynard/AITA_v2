@@ -26,9 +26,7 @@ use App\Http\Controllers\ResetPassword;
 use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\LoanController;
-
-
-
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
 	return redirect('/dashboard');
@@ -51,11 +49,16 @@ Route::put('/projects/{project}/items/{detail}', [ProjectController::class, 'upd
 
 //Loan
 Route::get('/loan', [LoanController::class, 'index'])->name('loan');
-Route::post('/loan', [LoanController::class, 'requestLoan'])->name('loan.requestLoan');
-Route::put('/loan', [LoanController::class, 'updateReturnStatus'])->name('loan.updateReturnStatus');
+Route::post('/loan/requestLoan', [LoanController::class, 'requestLoan'])->name('loan.requestLoan');
+Route::delete('/loan/cancelLoan', [LoanController::class, 'cancelLoanRequest'])->name('loan.cancelLoanRequest');
+Route::put('/loan/processPending', [LoanController::class, 'processPendingRequest'])->name('loan.processPendingRequest');
+Route::put('/loan/updateStatus', [LoanController::class, 'updateReturnStatus'])->name('loan.updateReturnStatus');
+
 //Report
-
-
+Route::get('/report', [ReportController::class, 'index'])->name('report');
+Route::get('/report/ItemOverview', [ReportController::class, 'itemOverview'])->name('report.itemOverview');
+Route::get('/report/LoanOverview', [ReportController::class, 'LoanOverview'])->name('report.LoanOverview');
+Route::get('/report/userActivity', [ReportController::class, 'userActivity'])->name('report.userActivity');
 
 Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.perform');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\ProjectDetails;
+use App\Models\UserActivityHistory;
 
 class ProjectController extends Controller
 {
@@ -90,6 +91,20 @@ class ProjectController extends Controller
 
         $project->save();
 
+        $desc = Auth()->user()->username . " has created project " . $project->name;
+
+
+        //Save into history
+        $activity = new UserActivityHistory();
+        $activity->user_id = Auth()->user()->id;
+        $activity->entity_type = 'project';
+        $activity->action = 'create';
+        $activity->entity_id = $project->id;
+        $activity->description = $desc;
+        $activity->changes = null;
+        $activity->action_timestamp = now(); // or specific timestamp if needed
+        $activity->save();
+
         // Redirect to the projects index page
         return redirect()->route('projects');
     }
@@ -98,6 +113,19 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
+
+        $desc = Auth()->user()->id . " has deleted project " . $project->name;
+
+        //Save into history
+        $activity = new UserActivityHistory();
+        $activity->user_id = Auth()->user()->id;
+        $activity->entity_type = 'project';
+        $activity->action = 'delete';
+        $activity->entity_id = $project->id;
+        $activity->description = $desc;
+        $activity->changes = null;
+        $activity->action_timestamp = now(); // or specific timestamp if needed
+        $activity->save();
         return redirect()->route('projects')->with('status', 'Project deleted successfully!');
     }
 
@@ -146,6 +174,19 @@ class ProjectController extends Controller
 
         $detail->save();
 
+
+        $desc = Auth()->user()->username . " has created item " . $detail->item_name . " from project " . $detail->project->name;
+
+        //Save into history
+        $activity = new UserActivityHistory();
+        $activity->user_id = Auth()->user()->id;
+        $activity->entity_type = 'item';
+        $activity->action = 'create';
+        $activity->entity_id = $detail->id;
+        $activity->description = $desc;
+        $activity->changes = null;
+        $activity->action_timestamp = now(); // or specific timestamp if needed
+        $activity->save();
         return redirect()->route('projects.show', $project->id)
             ->with('success', 'New item has been added to the project.');
     }
@@ -153,6 +194,8 @@ class ProjectController extends Controller
 
     public function updateItem(Project $project, ProjectDetails $detail, Request $request)
     {
+
+        $before = $detail;
         $validatedData = $request->validate([
             'item_name' => 'required|string|max:255',
             'type' => 'required|string',
@@ -191,7 +234,32 @@ class ProjectController extends Controller
         }
 
         $detail->save();
+        $changes = [];
+        if ($before && $detail) {
+            $originalData = $before->toArray();
+            $updatedData = $detail->toArray();
 
+            foreach ($updatedData as $key => $value) {
+                if ($originalData[$key] != $value) {
+                    $changes[$key] = [
+                        'before' => $originalData[$key],
+                        'after' => $value,
+                    ];
+                }
+            }
+        }
+
+        $desc = Auth()->user()->username . " has edited item " . $detail->item_name . " from project " . $detail->project->name;
+
+        $activity = new UserActivityHistory();
+        $activity->user_id = Auth()->user()->id;
+        $activity->entity_type = 'item';
+        $activity->action = 'edit';
+        $activity->entity_id = $detail->id;
+        $activity->description = $desc;
+        $activity->changes = $changes;
+        $activity->action_timestamp = now(); // or specific timestamp if needed
+        $activity->save();
         return redirect()->route('projects.show', $project->id)
             ->with('success', 'Item has been updated successfully.');
     }
@@ -215,11 +283,9 @@ class ProjectController extends Controller
 
     public function edit(Project $project, $detail)
     {
-
         // Find the project detail by id, with its corresponding project
         // $detail = ProjectDetails::with('project')->findOrFail($id);
         // $project = Project::find(1); // Retrieve the project with id 1
-
         $detail = $project->projectDetails()->where('id', $detail)->first();
 
         return view('pages.item-form', compact('detail', 'project'));

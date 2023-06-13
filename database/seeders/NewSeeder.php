@@ -1,19 +1,18 @@
-
 <?php
 
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Project;
 use App\Models\ProjectDetails;
 use Faker\Factory as Faker;
-
-class ProjectDetailsSeeder extends Seeder
+class NewSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $faker = Faker::create();
         $projects = Project::all();
