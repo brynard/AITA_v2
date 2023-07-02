@@ -48,7 +48,6 @@ class UserProfileController extends Controller
         $user->country = $request->get('country');
         $user->postal = $request->get('postal');
         $user->about = $request->get('about');
-        $user->role = $request->get('role');
         $user->phone = $request->get('phone');
 
         $user->save();

@@ -1,61 +1,70 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Projects'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Report / User Activity'])
     <div class="container-fluid py-4">
-        <form action="#" method="GET">
+        <form action="{{ route('report.userActivity') }}" method="GET">
             <div class="row mb-3">
-
-                <div class="input-group">
+                {{-- <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search projects" name="search"
                         value="{{ Request::get('search') }}">
                     <button type="submit" class="btn btn-primary btn-dark">
                         <i class="fas fa-search"></i>
                     </button>
-                </div>
-
+                </div> --}}
             </div>
             <div class="card shadow-lg">
                 <div class="card-body p-3">
                     <div class="row">
-
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="dateStartRangeFilter">Start Date:</label>
-                                <input type="text" class="form-control" id="dateStartRangeFilter"
-                                    placeholder="Select Start Date" data-provide="datepicker">
+                                <input type="date" class="form-control datepicker" id="dateStartRangeFilter"
+                                    name="dateStartRangeFilter" placeholder="Select End date"
+                                    value="{{ Request::get('dateStartRangeFilter') }}">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="dateEndRangeFilter">End Date:</label>
-                                <input type="text" class="form-control" id="dateEndRangeFilter"
-                                    placeholder="Select End Date" data-provide="datepicker">
+                                <input type="date" class="form-control datepicker" id="dateEndRangeFilter"
+                                    name="dateEndRangeFilter" placeholder="Select End date"
+                                    value="{{ Request::get('dateEndRangeFilter') }}">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="typeFilter">Type:</label>
-                                <select class="form-control" id="typeFilter">
+                                <select class="form-control" id="typeFilter" name="typeFilter">
                                     <option value="">All Types</option>
-                                    <option value="project">Project</option>
-                                    <option value="item">Item</option>
-                                    <option value="loan">Loan</option>
+                                    <option value="project" {{ Request::get('typeFilter') == 'project' ? 'selected' : '' }}>
+                                        Project</option>
+                                    <option value="item" {{ Request::get('typeFilter') == 'item' ? 'selected' : '' }}>Item
+                                    </option>
+                                    <option value="loan" {{ Request::get('typeFilter') == 'loan' ? 'selected' : '' }}>Loan
+                                    </option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="actionFilter">Action:</label>
-                                <select class="form-control" id="actionFilter">
+                                <select class="form-control" id="actionFilter" name="actionFilter">
                                     <option value="">All Actions</option>
-                                    <option value="create">Create</option>
-                                    <option value="edit">Edit</option>
-                                    <option value="delete">Delete</option>
-                                    <option value="approve">Approve</option>
-                                    <option value="request">Request</option>
-                                    <option value="reject">Reject</option>
-                                    <option value="return">Return</option>
+                                    <option value="create" {{ Request::get('actionFilter') == 'create' ? 'selected' : '' }}>
+                                        Create</option>
+                                    <option value="edit" {{ Request::get('actionFilter') == 'edit' ? 'selected' : '' }}>
+                                        Edit</option>
+                                    <option value="delete" {{ Request::get('actionFilter') == 'delete' ? 'selected' : '' }}>
+                                        Delete</option>
+                                    <option value="approve"
+                                        {{ Request::get('actionFilter') == 'approve' ? 'selected' : '' }}>Approve</option>
+                                    <option value="request"
+                                        {{ Request::get('actionFilter') == 'request' ? 'selected' : '' }}>Request</option>
+                                    <option value="reject"
+                                        {{ Request::get('actionFilter') == 'reject' ? 'selected' : '' }}>Reject</option>
+                                    <option value="return"
+                                        {{ Request::get('actionFilter') == 'return' ? 'selected' : '' }}>Return</option>
                                 </select>
                             </div>
                         </div>
@@ -63,18 +72,16 @@
                             <button class="btn btn-primary" id="filterButton">Filter</button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </form>
 
-        <div class="row mt-2">
+        <div class="row mt-2 p-3">
             {{-- <div class="col-12"> --}}
             <div class="card mb-4">
                 <div class="row mb-3 mt-2">
                     <div class="col-4 d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">User Activites History</h6>
-
                         {{-- <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownButton"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -89,7 +96,6 @@
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
-
                     <div class="timeline">
                         @foreach ($userActivity as $activity)
                             <div class="timeline-item">
@@ -106,12 +112,12 @@
                             </div>
                         @endforeach
                     </div>
-
                 </div>
             </div>
             {{-- </div> --}}
-        </div>
+            {!! $userActivityPagination !!}
 
+        </div>
     </div>
 
 

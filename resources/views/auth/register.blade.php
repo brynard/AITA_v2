@@ -104,6 +104,16 @@
                                         <p class='text-danger text-xs pt-1'> {{ $message }} </p>
                                     @enderror
                                 </div>
+                                <div class="form-group">
+                                    <select class="form-control" name="role">
+                                        <option value="" disabled selected>Select Role</option>
+                                        <option value="1">Project Leader</option>
+                                        <option value="2">RMC Staff</option>
+                                    </select>
+                                    @error('role')
+                                        <p class='text-danger text-xs'> {{ $message }} </p>
+                                    @enderror
+                                </div>
                                 <div class="flex flex-col mb-3">
                                     <input type="password" name="password" class="form-control" placeholder="Password"
                                         aria-label="Password">

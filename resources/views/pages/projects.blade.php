@@ -1,31 +1,38 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Projects'])
+    @include('layouts.navbars.auth.topnav', [
+        'title' => $readOnly == 1 ? 'UserManagent / Project' : 'Projects',
+    ])
     <div class="container-fluid py-4">
-        <div class="row mb-3">
-            <form action="#" method="GET">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search projects" name="search"
-                        value="{{ Request::get('search') }}">
-                    <button type="submit" class="btn btn-primary btn-dark">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
+        @if ($readOnly == 1)
+            <div class="row mb-3">
+                <form action="#" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search projects" name="search"
+                            value="{{ Request::get('search') }}">
+                        <button type="submit" class="btn btn-primary btn-dark">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        @endif
         <div class="row">
             {{-- <div class="col-12"> --}}
             <div class="card mb-4">
                 <div class="row mb-3 mt-2">
                     <div class="col-4 d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0">Projects table</h6>
-                        <div class="mt-2 mt-md-0 ">
-                            <button id="addProjectModalButton" class="btn btn-primary">
-                                <i class="fa fa-plus me-2"></i>
-                                Add Project
-                            </button>
-                        </div>
+                        <h6 class="mb-0">Projects table </h6>
+
+                        @if ($readOnly == 2)
+                            <div class="mt-2 mt-md-0 ">
+                                <button id="addProjectModalButton" class="btn btn-primary">
+                                    <i class="fa fa-plus me-2"></i>
+                                    Add Project
+                                </button>
+                            </div>
+                        @endif
                         {{-- <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownButton"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,11 +69,13 @@
                                         <td>
                                             <div class="d-flex px-2">
                                                 <div>
-                                                    <img src="data:image/png;base64,{{ $project->logo }}"
+                                                    <img src=" {{ $project->logo ? 'data:image/png;base64,' . $project->logo : '/img/itembox.png' }} "
                                                         class="avatar avatar-sm rounded-circle me-2" alt="spotify">
                                                 </div>
+
                                                 <div class="my-auto">
-                                                    <a href="{{ route('projects.show', $project->id) }}">
+                                                    <a
+                                                        href="{{ route('projects.show', ['project' => $project->id, 'readOnly' => $readOnly]) }}">
                                                         <h6 class="mb-0 text-sm">{{ $project->name }}</h6>
                                                     </a>
 
@@ -94,24 +103,26 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="align-middle">
-                                            <div class="btn-group position-relative">
-                                                <button type="button" class="btn btn-link text-secondary mb-0"
-                                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fa fa-ellipsis-v text-xs"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Change Status</a>
-                                                    <form action="{{ route('projects.destroy', $project->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item">Delete</button>
-                                                    </form>
+                                        @if ($readOnly == 2)
+                                            <td class="align-middle">
+                                                <div class="btn-group position-relative">
+                                                    <button type="button" class="btn btn-link text-secondary mb-0"
+                                                        data-bs-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v text-xs"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a class="dropdown-item" href="#">Change Status</a>
+                                                        <form action="{{ route('projects.destroy', $project->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="dropdown-item">Delete</button>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

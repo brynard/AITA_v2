@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])  
+@extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
     @include('layouts.navbars.auth.topnav', ['title' => 'Dashboard'])
@@ -10,14 +10,11 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Money</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Project</p>
                                     <h5 class="font-weight-bolder">
-                                        $53,000
+                                        {{ $totalProjects }}
                                     </h5>
-                                    <p class="mb-0">
-                                        <span class="text-success text-sm font-weight-bolder">+55%</span>
-                                        since yesterday
-                                    </p>
+
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -29,20 +26,17 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            {{-- <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Users</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Item</p>
                                     <h5 class="font-weight-bolder">
-                                        2,300
+                                        {{ $totalItems }}
                                     </h5>
-                                    <p class="mb-0">
-                                        <span class="text-success text-sm font-weight-bolder">+3%</span>
-                                        since last week
-                                    </p>
+
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -53,21 +47,18 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div class="card">
                     <div class="card-body p-3">
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">New Clients</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Item values</p>
                                     <h5 class="font-weight-bolder">
-                                        +3,462
+                                        RM {{ $totalItemValues }}
                                     </h5>
-                                    <p class="mb-0">
-                                        <span class="text-danger text-sm font-weight-bolder">-2%</span>
-                                        since last quarter
-                                    </p>
+
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -85,13 +76,11 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Sales</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Pending Loan Request</p>
                                     <h5 class="font-weight-bolder">
-                                        $103,430
+                                        {{ $totalPendingLoanRequests }}
                                     </h5>
-                                    <p class="mb-0">
-                                        <span class="text-success text-sm font-weight-bolder">+5%</span> than last month
-                                    </p>
+
                                 </div>
                             </div>
                             <div class="col-4 text-end">
@@ -104,11 +93,11 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
+        {{-- <div class="row mt-4">
             <div class="col-lg-7 mb-lg-0 mb-4">
                 <div class="card z-index-2 h-100">
                     <div class="card-header pb-0 pt-3 bg-transparent">
-                        <h6 class="text-capitalize">Sales overview</h6>
+                        <h6 class="text-capitalize">Total </h6>
                         <p class="text-sm mb-0">
                             <i class="fa fa-arrow-up text-success"></i>
                             <span class="font-weight-bold">4% more</span> in 2021
@@ -173,151 +162,119 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col-lg-7 mb-lg-0 mb-4">
+        </div>  --}}
+        <div class="row mt-8 ">
+            <div class="col-lg-6 mb-lg-0 mb-4">
                 <div class="card ">
                     <div class="card-header pb-0 p-3">
                         <div class="d-flex justify-content-between">
-                            <h6 class="mb-2">Sales by Country</h6>
+                            <h6 class="mb-2">Projects</h6>
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table align-items-center ">
-                            <tbody>
-                                <tr>
-                                    <td class="w-30">
-                                        <div class="d-flex px-2 py-1 align-items-center">
-                                            <div>
-                                                <img src="./img/icons/flags/US.png" alt="Country flag">
-                                            </div>
-                                            <div class="ms-4">
-                                                <p class="text-xs font-weight-bold mb-0">Country:</p>
-                                                <h6 class="text-sm mb-0">United States</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Sales:</p>
-                                            <h6 class="text-sm mb-0">2500</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Value:</p>
-                                            <h6 class="text-sm mb-0">$230,900</h6>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-sm">
-                                        <div class="col text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                                            <h6 class="text-sm mb-0">29.9%</h6>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="w-30">
-                                        <div class="d-flex px-2 py-1 align-items-center">
-                                            <div>
-                                                <img src="./img/icons/flags/DE.png" alt="Country flag">
-                                            </div>
-                                            <div class="ms-4">
-                                                <p class="text-xs font-weight-bold mb-0">Country:</p>
-                                                <h6 class="text-sm mb-0">Germany</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Sales:</p>
-                                            <h6 class="text-sm mb-0">3.900</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Value:</p>
-                                            <h6 class="text-sm mb-0">$440,000</h6>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-sm">
-                                        <div class="col text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                                            <h6 class="text-sm mb-0">40.22%</h6>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="w-30">
-                                        <div class="d-flex px-2 py-1 align-items-center">
-                                            <div>
-                                                <img src="./img/icons/flags/GB.png" alt="Country flag">
-                                            </div>
-                                            <div class="ms-4">
-                                                <p class="text-xs font-weight-bold mb-0">Country:</p>
-                                                <h6 class="text-sm mb-0">Great Britain</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Sales:</p>
-                                            <h6 class="text-sm mb-0">1.400</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Value:</p>
-                                            <h6 class="text-sm mb-0">$190,700</h6>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-sm">
-                                        <div class="col text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                                            <h6 class="text-sm mb-0">23.44%</h6>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="w-30">
-                                        <div class="d-flex px-2 py-1 align-items-center">
-                                            <div>
-                                                <img src="./img/icons/flags/BR.png" alt="Country flag">
-                                            </div>
-                                            <div class="ms-4">
-                                                <p class="text-xs font-weight-bold mb-0">Country:</p>
-                                                <h6 class="text-sm mb-0">Brasil</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Sales:</p>
-                                            <h6 class="text-sm mb-0">562</h6>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Value:</p>
-                                            <h6 class="text-sm mb-0">$143,960</h6>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle text-sm">
-                                        <div class="col text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                                            <h6 class="text-sm mb-0">32.14%</h6>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        @if (empty($projectData))
+                            <li class="list-group-item border-0 d-flex justify-content-center ps-0 mb-2 border-radius-lg">
+                                No projects
+                            </li>
+                        @else
+                            <table class="table align-items-center">
+                                <tbody>
+                                    @foreach ($projectData as $data)
+                                        <tr>
+                                            <td class="w-30">
+                                                <div class="d-flex px-2 py-1 align-items-center">
+                                                    <div>
+                                                        <img src="./img/icons/flags/US.png" alt="Country flag">
+                                                    </div>
+                                                    <div class="ms-4">
+                                                        <p class="text-xs font-weight-bold mb-0">Project:</p>
+                                                        <h6 class="text-sm mb-0">{{ $data['projectName'] }}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-center">
+                                                    <p class="text-xs font-weight-bold mb-0">Total Items:</p>
+                                                    <h6 class="text-sm mb-0">{{ $data['totalItems'] }}</h6>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-center">
+                                                    <p class="text-xs font-weight-bold mb-0">Total Values:</p>
+                                                    <h6 class="text-sm mb-0">RM {{ $data['totalValues'] }}</h6>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle text-sm">
+                                                <div class="col text-center">
+                                                    <p class="text-xs font-weight-bold mb-0">Item Available:</p>
+                                                    <h6 class="text-sm mb-0">{{ $data['availability'] }}</h6>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
+
                 </div>
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-6">
+                <div class="card h-200">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Pending Approval</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <ul class="list-group">
+                            @if ($pendingApprovals->isEmpty())
+                                <li
+                                    class="list-group-item border-0 d-flex justify-content-center ps-0 mb-2 border-radius-lg">
+                                    No pending request
+                                </li>
+                            @else
+                                @foreach ($pendingApprovals as $pendingApproval)
+                                    <li
+                                        class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                                        <div class="d-flex align-items-center">
+                                            <div class="d-flex flex-column">
+                                                <h6 class="mb-1 text-dark text-sm">
+                                                    {{ $pendingApproval->projectDetails->item_name }}</h6>
+                                                <span class="text-xs">Requester:
+                                                    {{ $pendingApproval->requester->username }}</span>
+                                                <span class="text-xs">
+                                                    {{ date('d/m/Y', strtotime($pendingApproval->loan_start_date)) }}
+                                                    - {{ date('d/m/Y', strtotime($pendingApproval->loan_end_date)) }}
+                                                </span>
+                                                <span class="text-xs">{{ $pendingApproval->desc }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <button
+                                                class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-top my-auto"
+                                                data-toggle="modal" data-target="#confirmationModal"
+                                                onclick="showConfirmationModal('decline', {{ $pendingApproval->id }})">
+                                                <i class="fas fa-times" aria-hidden="true"></i>
+                                            </button>
+                                            <button
+                                                class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-top my-auto"
+                                                data-toggle="modal" data-target="#confirmationModal"
+                                                onclick="showConfirmationModal('approve', {{ $pendingApproval->id }})">
+                                                <i class="fas fa-check" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+                    </div>
+
+                    {{ $pendingApprovals->links() }}
+                </div>
+            </div>
+            {{-- <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header pb-0 p-3">
-                        <h6 class="mb-0">Categories</h6>
+                        <h6 class="mb-0">Pending Loan</h6>
                     </div>
                     <div class="card-body p-3">
                         <ul class="list-group">
@@ -327,7 +284,7 @@
                                         <i class="ni ni-mobile-button text-white opacity-10"></i>
                                     </div>
                                     <div class="d-flex flex-column">
-                                        <h6 class="mb-1 text-dark text-sm">Devices</h6>
+                                        <h6 class="mb-1 text-dark text-sm">Activities</h6>
                                         <span class="text-xs">250 in stock, <span class="font-weight-bold">346+
                                                 sold</span></span>
                                     </div>
@@ -391,7 +348,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         @include('layouts.footers.auth.footer')
     </div>

@@ -33,19 +33,20 @@ class ProjectController extends Controller
 
         $projects = $query->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('pages.projects', ['projects' => $projects]);
+
+        return view('pages.projects', ['projects' => $projects, 'readOnly' => 2]);
     }
 
 
 
 
-    public function show(Project $project, Request $request)
+    public function show(Project $project, $readOnly = 2, Request $request)
     {
         $projectWithDetails = Project::with('projectDetails')->findOrFail($project->id);
         // get the search query from the request
         $search = $request->input('search');
 
-
+        $readOnly = $readOnly;
         if ($request->has('filter')) {
             // Filter the items based on the filter parameter
             if ($request->get('filter') == 'assets') {
@@ -61,7 +62,7 @@ class ProjectController extends Controller
             });
         }
 
-        return view('pages.project-detail', compact('projectWithDetails'));
+        return view('pages.project-detail', compact('projectWithDetails', 'readOnly'));
     }
 
 
@@ -187,12 +188,12 @@ class ProjectController extends Controller
         $activity->changes = null;
         $activity->action_timestamp = now(); // or specific timestamp if needed
         $activity->save();
-        return redirect()->route('projects.show', $project->id)
+        return redirect()->route('projects.show', ['project' => $project->id, 'readOnly' => 2])
             ->with('success', 'New item has been added to the project.');
     }
 
 
-    public function updateItem(Project $project, ProjectDetails $detail, Request $request)
+    public function updateItem(Project $project, ProjectDetails $detail, $readOnly, Request $request)
     {
 
         $before = $detail;
@@ -260,8 +261,33 @@ class ProjectController extends Controller
         $activity->changes = $changes;
         $activity->action_timestamp = now(); // or specific timestamp if needed
         $activity->save();
-        return redirect()->route('projects.show', $project->id)
+        return redirect()->route('projects.show', ['project' => $project->id, 'readOnly' => $readOnly])
             ->with('success', 'Item has been updated successfully.');
+    }
+
+
+    public function destroyItem(Project $project, ProjectDetails $detail, $readOnly, Request $request)
+    {
+        $desc = Auth()->user()->username . " has deleted item ";
+        //Save into history
+        $activity = new UserActivityHistory();
+        $activity->user_id = Auth()->user()->id;
+        $activity->entity_type = 'item';
+        $activity->action = 'delete';
+        $activity->entity_id = $detail->id;
+        $activity->description = $desc;
+        $activity->action_timestamp = now(); // or specific timestamp if needed
+        $activity->save();
+
+
+
+        $detail->delete();
+
+
+
+
+        return redirect()->route('projects.show', ['project' => $project->id, 'readOnly' => $readOnly])
+            ->with('success', 'Item has been deleted successfully.');
     }
 
 
@@ -281,13 +307,19 @@ class ProjectController extends Controller
     // }
 
 
-    public function edit(Project $project, $detail)
+    public function edit(Project $project, $detail, $readOnly)
     {
         // Find the project detail by id, with its corresponding project
         // $detail = ProjectDetails::with('project')->findOrFail($id);
         // $project = Project::find(1); // Retrieve the project with id 1
         $detail = $project->projectDetails()->where('id', $detail)->first();
 
-        return view('pages.item-form', compact('detail', 'project'));
+        return view('pages.item-form', compact('detail', 'project', 'readOnly'));
+    }
+
+
+    public function test()
+    {
+        return view('pages.item-selection');
     }
 }

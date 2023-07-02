@@ -36,6 +36,9 @@
             </div>
             <ul class="navbar-nav  justify-content-end">
                 <li class="nav-item d-flex align-items-center">
+                    <p class="nav-link text-white p-3">{{ auth()->user()->username }} </p>
+                </li>
+                <li class="nav-item d-flex align-items-center">
                     <form role="form" method="post" action="{{ route('logout') }}" id="logout-form">
                         @csrf
                         <a href="{{ route('logout') }}"
@@ -55,11 +58,11 @@
                         </div>
                     </a>
                 </li>
-                <li class="nav-item px-3 d-flex align-items-center">
+                {{-- <li class="nav-item px-3 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-white p-0">
                         <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
                     </a>
-                </li>
+                </li> --}}
                 {{-- <li class="nav-item dropdown pe-2 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">

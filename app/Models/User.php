@@ -33,6 +33,11 @@ class User extends Authenticatable
         'profile_picture'
     ];
 
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

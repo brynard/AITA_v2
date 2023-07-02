@@ -1,10 +1,15 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Projects'])
+    @include('layouts.navbars.auth.topnav', [
+        'title' => $readOnly == 1 ? 'UserManagent / Project / Item' : 'Projects / Item',
+    ])
+
+
     <div class="container-fluid py-4">
         <div class="row mb-3">
-            <form action="{{ route('projects.show', ['project' => $projectWithDetails->id]) }}" method="GET">
+            <form action="{{ route('projects.show', ['project' => $projectWithDetails->id, 'readOnly' => 'readOnly']) }}"
+                method="GET">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search asset or inventory" name="search"
                         value="{{ Request::get('search') }}">
@@ -27,13 +32,13 @@
                             @php $prevProjectName = $detail->project->name @endphp
                         @endif
                     @endforeach
-
                     <div class="mt-2 mt-md-0 ">
-                        <a href="{{ route('projects.createItem', ['project' => $projectWithDetails->id]) }}"
-                            class="btn btn-primary">
-                            <i class="fa fa-plus me-2"></i> Add items
-                        </a>
-
+                        @if ($readOnly == 2)
+                            <a href="{{ route('projects.createItem', ['project' => $projectWithDetails->id]) }}"
+                                class="btn btn-primary">
+                                <i class="fa fa-plus me-2"></i> Add items
+                            </a>
+                        @endif
 
                     </div>
                     <div class="dropdown">
@@ -43,11 +48,11 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="filterDropdownButton">
                             <a class="dropdown-item {{ !Request::get('filter') ? 'active' : '' }}"
-                                href="{{ route('projects.show', ['project' => $projectWithDetails->id]) }}">All</a>
+                                href="{{ route('projects.show', ['project' => $projectWithDetails->id, 'readOnly' => $readOnly]) }}">All</a>
                             <a class="dropdown-item {{ Request::get('filter') == 'assets' ? 'active' : '' }}"
-                                href="{{ route('projects.show', ['project' => $projectWithDetails->id, 'filter' => 'assets']) }}">Assets</a>
+                                href="{{ route('projects.show', ['project' => $projectWithDetails->id, 'readOnly' => $readOnly, 'filter' => 'assets']) }}">Assets</a>
                             <a class="dropdown-item {{ Request::get('filter') == 'inventory' ? 'active' : '' }}"
-                                href="{{ route('projects.show', ['project' => $projectWithDetails->id, 'filter' => 'inventory']) }}">Inventory</a>
+                                href="{{ route('projects.show', ['project' => $projectWithDetails->id, 'readOnly' => $readOnly, 'filter' => 'inventory']) }}">Inventory</a>
                         </div>
                     </div>
 
@@ -110,7 +115,18 @@
 
                                         </td>
                                         <td class="align-middle">
-                                            <a href="{{ route('projects.editItem', ['project' => $projectWithDetails->id, 'detail' => $detail->id]) }}"
+                                            <form
+                                                action="{{ route('projects.deleteItem', ['project' => $projectWithDetails->id, 'detail' => $detail, 'readOnly' => $readOnly]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="text-secondary font-weight-bold text-xs">Delete</button>
+                                            </form>
+
+                                        </td>
+                                        <td class="align-middle">
+                                            <a href="{{ route('projects.editItem', ['project' => $projectWithDetails->id, 'detail' => $detail->id, 'readOnly' => $readOnly]) }}"
                                                 class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                                                 data-original-title="Edit user">
                                                 Edit

@@ -27,25 +27,28 @@ use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AuditController;
 
 Route::get('/', function () {
 	return redirect('/dashboard');
 })->middleware('auth');
 //Projects 
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
-Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+Route::get('/projects/{project}/{readOnly}', [ProjectController::class, 'show'])->name('projects.show');
+
 Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
 Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
 
 
 //Project Details
-Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+Route::get('/projects/{project}/{readOnly}', [ProjectController::class, 'show'])->name('projects.show');
 Route::post('/projects/{project}/items', [ProjectController::class, 'storeItem'])->name('projects.storeItem');
 Route::get('/projects/{project}/items/create', [ProjectController::class, 'createItem'])->name('projects.createItem');
-Route::get('/projects/{project}/items/{detail}', [ProjectController::class, 'edit'])->name('projects.editItem');
-Route::put('/projects/{project}/items/{detail}', [ProjectController::class, 'updateItem'])->name('projects.updateItem');
-
+Route::get('/projects/{project}/items/{detail}/{readOnly?}', [ProjectController::class, 'edit'])->name('projects.editItem');
+Route::put('/projects/{project}/items/{detail}/{readOnly?}', [ProjectController::class, 'updateItem'])->name('projects.updateItem');
+Route::delete('/projects/{project}/items/{detail}/{readOnly?}', [ProjectController::class, 'destroyItem'])->name('projects.deleteItem');
+// Route::get('/testing', [ProjectController::class, 'test'])->name('test');
 
 //Loan
 Route::get('/loan', [LoanController::class, 'index'])->name('loan');
@@ -59,6 +62,13 @@ Route::get('/report', [ReportController::class, 'index'])->name('report');
 Route::get('/report/ItemOverview', [ReportController::class, 'itemOverview'])->name('report.itemOverview');
 Route::get('/report/LoanOverview', [ReportController::class, 'LoanOverview'])->name('report.LoanOverview');
 Route::get('/report/userActivity', [ReportController::class, 'userActivity'])->name('report.userActivity');
+
+
+//Audit
+Route::get('/userManagement', [AuditController::class, 'index'])->name('userManagement');
+Route::get('/userManagement/{project}', [AuditController::class, 'show'])->name('userManagement.project');
+
+
 
 Route::get('/register', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.perform');

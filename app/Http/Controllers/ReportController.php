@@ -61,14 +61,55 @@ class ReportController extends Controller
         $userId = Auth()->user()->id;
 
         // Fetch the user activity history for the current user and sort by the latest activity
-        $userActivity = UserActivityHistory::where('user_id', $userId)
-            ->orderBy('action_timestamp', 'desc')
-            ->paginate(5);
-        return view(
-            'pages.report-user-activtity',
-            ['userActivity' => $userActivity]
-        );
+        $query = UserActivityHistory::where('user_id', $userId)->orderBy('action_timestamp', 'desc');
+
+
+
+
+        // Apply filters if they are present in the request
+        $startDate = $request->input('dateStartRangeFilter');
+        $endDate = $request->input('dateEndRangeFilter');
+
+        if ($startDate && $endDate) {
+            // Add date range filter if both start and end dates are provided
+            $query->whereBetween('action_timestamp', [$startDate, $endDate]);
+        } elseif ($startDate) {
+            // Add start date filter if only start date is provided
+            $query->where('action_timestamp', '>=', $startDate);
+        } elseif ($endDate) {
+            // Add end date filter if only end date is provided
+            $query->where('action_timestamp', '<=', $endDate);
+        }
+
+        if ($request->filled('typeFilter')) {
+            $type = $request->input('typeFilter');
+
+            // Add type filter
+            $query->where('entity_type', $type);
+        }
+
+        if ($request->filled('actionFilter')) {
+            $action = $request->input('actionFilter');
+
+            // Add action filter
+            $query->where('action', $action);
+        }
+
+        // Paginate the filtered results
+        $userActivity = $query->paginate(5);
+
+        $userActivity->appends($request->only([
+            'dateStartRangeFilter',
+            'dateEndRangeFilter',
+            'typeFilter',
+            'actionFilter'
+        ]));
+
+        return view('pages.report-user-activtity', [
+            'userActivity' => $userActivity
+        ])->with('userActivityPagination', $userActivity->links());
     }
+
 
 
     public function getStatusCount()

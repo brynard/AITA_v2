@@ -1,10 +1,10 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Projects'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Report / Item Overview'])
     <div class="card shadow-lg mx-4 card-profile-bottom">
         <div class="card-body p-3">
-            <h4>Loan Overview</h4>
+            <h4>Item Overview</h4>
         </div>
     </div>
     <div class="container-fluid py-4">
@@ -93,7 +93,7 @@
                 </div>
 
             </div>
-            <div class="col-lg-7 mb-lg-0 mb-4">
+            {{-- <div class="col-lg-7 mb-lg-0 mb-4">
                 <div class="card z-index-2 h-100">
                     <div class="card-header pb-0 pt-3 bg-transparent">
                         <h6 class="text-capitalize">Items by project</h6>
@@ -106,7 +106,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div> --}}
         </div>
 
         <div class="row mt-3">

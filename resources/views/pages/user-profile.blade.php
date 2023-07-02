@@ -1,7 +1,12 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Your Profile'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Profile'])
+    @php
+        $role = old('role', auth()->user()->role);
+        $output = $role == 1 ? 'Project Leader' : 'RMC Staff';
+    @endphp
+
     <div class="card shadow-lg mx-4 card-profile-bottom">
         <div class="card-body p-3">
             <form role="form" method="POST" action={{ route('profile.update') }} enctype="multipart/form-data">
@@ -24,15 +29,15 @@
                     <div class="col-auto my-auto">
                         <div class="h-100">
                             <h5 class="mb-1">
-                                {{ auth()->user()->firstname ?? 'Firstname' }} {{ auth()->user()->lastname ?? 'Lastname' }}
+                                {{ auth()->user()->username }}
                             </h5>
                             <p class="mb-0 font-weight-bold text-sm">
-                                {{ auth()->user()->role ?? 'Firstname' }}
+                                {{ $output }}
 
                             </p>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                    {{-- <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                         <div class="nav-wrapper position-relative end-0">
                             <ul class="nav nav-pills nav-fill p-1" role="tablist">
                                 <li class="nav-item">
@@ -58,7 +63,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
         </div>
     </div>
@@ -110,8 +115,9 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="example-text-input" class="form-control-label">Role</label>
-                                    <input class="form-control" type="text" name="role"
-                                        value="{{ old('role', auth()->user()->role) }}">
+
+                                    <input class="form-control" type="text" name="role" value="{{ $output }}"
+                                        readonly>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +135,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <label for="example-text-input" class="form-control-label">Address</label>
+                                <label for="example-text-input" class="form-control-label">Office Location</label>
                                 <input class="form-control" type="text" name="address"
                                     value="{{ old('address', auth()->user()->address) }}">
                             </div>

@@ -67,12 +67,13 @@
                     </div>
                     <div class="card-body">
                         @if (isset($detail))
-                            <form action="{{ route('projects.updateItem', [$project->id, $detail->id]) }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('projects.updateItem', [$project->id, $detail->id, $readOnly]) }}"
+                                method="POST" enctype="multipart/form-data">
                                 @method('PUT')
                             @else
-                                <form action="{{ route('projects.storeItem', ['project' => $project->id]) }}" method="POST"
-                                    enctype="multipart/form-data">
+                                <form
+                                    action="{{ route('projects.storeItem', ['project' => $project->id, 'readOnly' => 2]) }}"
+                                    method="POST" enctype="multipart/form-data">
                         @endif
 
                         @csrf
@@ -209,6 +210,7 @@
                                     required value="{{ date('Y-m-d') }}" required>
                             </div>
                         </div>
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="image" class="form-control-label">Image</label>
@@ -221,6 +223,7 @@
                                             style="{{ !isset($detail) ? 'display:none;' : '' }} max-width: 100%; max-height: 100%; object-fit: contain;">
 
                                     </div>
+                               
                                     <input id="image" type="file" class="form-control mt-3" name="image"
                                         accept="image/*">
                                     <button type="button" class="btn btn-danger mt-3" id="remove-image"

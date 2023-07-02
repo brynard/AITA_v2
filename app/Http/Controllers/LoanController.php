@@ -26,35 +26,43 @@ class LoanController extends Controller
                     $query->where('id', '!=', Auth()->user()->id);
                 });
             })
-            ->whereNotIn('id', function ($query) {
-                $query->select('project_details_id')
-                    ->from('loan_requests')
-                    ->where('return_status', '!=', 'returned');
-            })
             ->when($search, function ($query) use ($search) {
                 // Apply search logic if search query is present
                 $query->whereHas('project', function ($query) use ($search) {
                     $query->where('item_name', 'like', '%' . $search . '%');
                 });
             })
+            ->whereNotIn('id', function ($query) {
+                $query->select('project_details_id')
+                    ->from('loan_requests')
+                    ->where('status', 'pending');
+            })
             ->paginate(5);
 
 
 
+        $ownerLoanManagement = LoanRequest::where('owner_id', $userId)
+            ->where('return_status', 'not_returned')
+            ->orderBy('created_at', 'desc')
+            ->paginate(4);
+
 
         $loanRequests = LoanRequest::where('requester_id', $userId)
-            ->where('return_status', '!=', 'returned')
+            ->orderBy('created_at', 'desc')
             ->paginate(4);
 
         $pendingApprovals = LoanRequest::where('owner_id', $userId)
             ->where('status', 'pending')
             ->paginate(4);
 
+
         return view('pages.loan-item', [
             'loanItems' => $loanItems,
             'loanRequests' => $loanRequests,
-            'pendingApprovals' => $pendingApprovals
-        ])->with('loanItemsPagination', $loanItems->links());
+            'pendingApprovals' => $pendingApprovals,
+            'ownerLoanManagement' => $ownerLoanManagement
+        ])->with('loanItemsPagination', $loanItems->links())
+            ->with('loanRequestsPagination', $loanRequests->links());
     }
 
 
@@ -80,11 +88,14 @@ class LoanController extends Controller
         $loanRequest->project_details_id = $request->input('project_details_id');
         $loanRequest->owner_id = $request->input('owner_id');
         $loanRequest->requester_id = $request->input('requester_id');
+        $loanRequest->save();
+
+
 
         // Set other properties as needed
         $desc = Auth()->user()->username . " has request loan item [" . $loanRequest->projectDetails->item_name . '] from ' . $loanRequest->owner->username;
         // Save the loan request to the database
-        $loanRequest->save();
+
         $activity = new UserActivityHistory();
         $activity->user_id = Auth()->user()->id;
         $activity->entity_type = 'loan';
@@ -189,7 +200,7 @@ class LoanController extends Controller
 
         // Update the status based on the action
         if ($action === 'approve') {
-            $loanRequest->update(['status' => 'approved',  'process_date' => now()]);
+            $loanRequest->update(['status' => 'approved',  'process_date' => now(), 'return_status' => 'not_returned']);
 
             // Find the related ProjectDetails and update its status to 'Loaned'
             $projectDetails = ProjectDetails::where('id', $loanRequest->project_details_id)->first();

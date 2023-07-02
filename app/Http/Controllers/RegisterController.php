@@ -19,7 +19,8 @@ class RegisterController extends Controller
             'email' => 'required|email|max:255|unique:users,email',
             'phone' => 'required',
             'password' => ['required', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'],
-            'terms' => 'required'
+            'terms' => 'required',
+            'role' => 'required'
         ]);
         $user = User::create($attributes);
         auth()->login($user);

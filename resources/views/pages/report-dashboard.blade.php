@@ -1,7 +1,7 @@
 @extends('layouts.app', ['class' => 'g-sidenav-show bg-gray-100'])
 
 @section('content')
-    @include('layouts.navbars.auth.topnav', ['title' => 'Projects'])
+    @include('layouts.navbars.auth.topnav', ['title' => 'Report'])
     <div class="card shadow-lg mx-4 card-profile-bottom">
         <div class="card-body p-3">
             <h4>Report page</h1>
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-6">
+            {{-- <div class="col-lg-6">
                 <div class="card report-card">
                     <a href="inventory.html">
                         <div class="card-body">
@@ -51,7 +51,7 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
 
         </div>
